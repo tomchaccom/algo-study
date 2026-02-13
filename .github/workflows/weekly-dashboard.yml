@@ -5,7 +5,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: '59 14 * * 0'  # Sunday 23:59 KST (UTC 기준)
+    - cron: '59 14 * * 0'
   workflow_dispatch:
 
 jobs:
@@ -23,7 +23,6 @@ jobs:
             const org = context.repo.owner;
             const repo = context.repo.repo;
 
-            // 1️⃣ Organization 멤버 가져오기
             const { data: members } = await github.rest.orgs.listMembers({
               org: org,
               per_page: 100
@@ -31,7 +30,6 @@ jobs:
 
             const memberLogins = members.map(m => m.login);
 
-            // 2️⃣ 이번 주 월요일 00:00 KST 계산
             const now = new Date();
             const kstOffset = 9 * 60 * 60 * 1000;
             const kstNow = new Date(now.getTime() + kstOffset);
@@ -45,7 +43,6 @@ jobs:
 
             const mondayUTC = new Date(mondayKST.getTime() - kstOffset);
 
-            // 3️⃣ Merge된 PR 가져오기
             const { data: pulls } = await github.rest.pulls.list({
               owner: org,
               repo: repo,
@@ -57,7 +54,6 @@ jobs:
               pr.merged_at && new Date(pr.merged_at) >= mondayUTC
             );
 
-            // 4️⃣ 멤버별 카운트 초기화
             const counts = {};
             memberLogins.forEach(user => counts[user] = 0);
 
@@ -67,7 +63,6 @@ jobs:
               }
             });
 
-            // 5️⃣ Markdown 테이블 생성
             let table = "";
             table += `📅 기준: ${mondayKST.toISOString().slice(0,10)} (월요일 00:00 KST)\n\n`;
             table += "| Member | Count | Status |\n";
@@ -79,25 +74,22 @@ jobs:
               table += `| ${user} | ${count} | ${status} |\n`;
             }
 
-            return table;
+            require('fs').writeFileSync('dashboard.md', table);
 
       - name: Inject into README
         run: |
-          TABLE="${{ steps.stats.outputs.result }}"
-
-          awk -v table="$TABLE" '
+          awk '
+          FNR==NR {dashboard=$0"\n"; next}
           /<!-- WEEKLY_DASHBOARD_START -->/ {
             print;
             print "";
-            print table;
+            while ((getline line < "dashboard.md") > 0) print line;
             skip=1;
             next;
           }
-          /<!-- WEEKLY_DASHBOARD_END -->/ {
-            skip=0;
-          }
+          /<!-- WEEKLY_DASHBOARD_END -->/ { skip=0 }
           !skip
-          ' README.md > temp.md
+          ' dashboard.md README.md > temp.md
 
           mv temp.md README.md
 
