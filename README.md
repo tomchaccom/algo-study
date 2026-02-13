@@ -17,11 +17,6 @@
 
 <!-- WEEKLY_DASHBOARD_START -->
 
-📅 기준: 2026-02-09 (월요일 00:00 KST)
-
-| Member | Count | Status |
-|--------|-------|--------|
-| tomchaccom | 2 | ❌ |
 <!-- WEEKLY_DASHBOARD_END -->
 
 
