@@ -51,7 +51,6 @@ def bfs(x, y, visited, n, m, maps):
     
     while(que):
         cx, cy = que.popleft()
-        visited[cx][cy] = True
         food += int(maps[cx][cy])
         
         for i in range(4):
