@@ -229,6 +229,7 @@ leet/hard/median-two-sorted-arrays
 | ------- |
 | [0001-two-sum](https://github.com/tomchaccom/algo-study/tree/master/0001-two-sum) |
 | [0066-plus-one](https://github.com/sungjaep11/algo-study/tree/master/0066-plus-one) |
+| [1886-determine-whether-matrix-can-be-obtained-by-rotation](https://github.com/tomchaccom/algo-study/tree/master/1886-determine-whether-matrix-can-be-obtained-by-rotation) |
 ## Hash Table
 |  |
 | ------- |
@@ -259,4 +260,8 @@ leet/hard/median-two-sorted-arrays
 |  |
 | ------- |
 | [0061-rotate-list](https://github.com/sungjaep11/algo-study/tree/master/0061-rotate-list) |
+## Matrix
+|  |
+| ------- |
+| [1886-determine-whether-matrix-can-be-obtained-by-rotation](https://github.com/tomchaccom/algo-study/tree/master/1886-determine-whether-matrix-can-be-obtained-by-rotation) |
 <!---LeetCode Topics End-->
